@@ -8,10 +8,8 @@
   packages = [
     # Python environment
     pkgs.python311
-    pkgs.python311Packages.pip
-    pkgs.python311Packages.virtualenv
-
-    # Development tools
+    
+    # Development tools (uv includes pip functionality)
     pkgs.uv
     pkgs.curl
     pkgs.wget
