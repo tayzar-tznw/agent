@@ -1,56 +1,133 @@
 [project]
-name = "adk-workshop"
-version = "0.1.0"
-description = "Google ADK (Agent Development Kit) Workshop Environment"
-readme = "README_SETUP.md"
-requires-python = ">=3.11"
+name = "agent"
+version = "0.14.0"
+description = "CLI to bootstrap production-ready Google Cloud GenAI agent projects from templates."
+license = {text = "Apache-2.0"}
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
-    # Google ADK and AI packages
-    "google-adk==1.2.1",
-    "google-genai==1.20.0",
-    "google-cloud-aiplatform[agent_engines]>=1.97.0",
-    
-    # Jupyter ecosystem
-    "jupyter>=1.0.0",
-    "notebook>=7.0.0",
-    "ipykernel>=6.0.0",
-    "ipywidgets>=8.0.0",
-    
-    # Google API and authentication
-    "google-api-python-client>=2.0.0",
-    "google-auth>=2.0.0",
-    "google-auth-httplib2>=0.2.0",
-    "google-auth-oauthlib>=1.0.0",
-    
-    # Additional dependencies
-    "python-dotenv>=1.0.0",
-    "aiohttp>=3.8.0",
-    "httplib2>=0.20.0",
-    "protobuf>=4.0.0",
-    "grpcio>=1.50.0",
+    "click>=8.1.7",
+    "cookiecutter~=2.6.0",
+    "google-cloud-aiplatform>=1.87.0",
+    "rich>=13.7.0",
+    "pyyaml>=6.0.1",
+    "backoff>=2.2.1",
+    "tomli>=1.1.0; python_version < \"3.11\"",
+    "jupyter>=1.1.1",
+    "ipykernel>=6.30.1",
+    "notebook>=7.4.5",
+    "ipywidgets>=8.1.7",
+]
+
+[dependency-groups]
+dev = [
+    "black~=23.11.0",
+    "crewai~=0.95.0",
+    "flake8~=6.1.0",
+    "google-cloud-logging~=3.11.4",
+    "grpcio~=1.70.0",
+    "isort~=5.12.0",
+    "langchain-core~=0.3.34",
+    "langchain-google-community[vertexaisearch]~=2.0.4",
+    "langchain-google-vertexai~=2.0.13",
+    "langgraph~=0.2.72",
+    "myst-parser~=2.0.0",
+    "opentelemetry-instrumentation-langchain~=0.38.5",
+    "pytest~=7.4.3",
+    "pytest-cov~=4.1.0",
+    "pytest-mock~=3.12.0",
+    "pytest-rerunfailures>=15.0",
+    "pytest-xdist~=3.6.1",
+    "rich~=13.7.0",
+    "sphinx~=7.1.2",
+    "sphinx-autoapi~=3.0.0",
+    "sphinx-click~=5.1.0",
+    "sphinx-rtd-theme~=2.0.0",
+    "streamlit~=1.42.0",
+    "streamlit-feedback~=0.1.4",
+    "types-PyYAML",
+    "types-requests",
+    "watchdog~=6.0.0",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=7.0.0",
-    "black>=23.0.0",
-    "ruff>=0.1.0",
+jupyter = [
+    "ipykernel>=6.29.5",
+    "jupyter"
 ]
+
+lint = [
+    "ruff",
+    "mypy",
+    "codespell",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src/frontends/streamlit", "src", "agents/agentic_rag"]
+testpaths = ["tests"]
+addopts = "-s -v --ignore=tests/integration"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s - %(levelname)s - %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+include = ["src/cli/**/*.py", "tests/**/*.py", "src/frontends/streamlit/**/*.py"]
+exclude = ["./agents/**/*.py", "./tests/cicd/scripts/**/*.py"]
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "C",  # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP", # pyupgrade
+    "RUF", # ruff specific rules
+    "PLW1514", # unspecified-encoding (require encoding in open calls)
+]
+ignore = ["E501", "C901", "RUF001", "UP036"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "frontend"]
+
+[tool.mypy]
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+disallow_subclassing_any = true
+warn_incomplete_stub = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+follow_imports = "silent"
+ignore_missing_imports = true
+explicit_package_bases = true
+disable_error_code = ["misc", "no-untyped-call", "no-any-return"]
+exclude = '''(?x)(
+    ^agents/.*$  # exclude all files under agents
+    ^tests/cicd/scripts/.*$  # exclude cicd scripts
+)'''
+
+[tool.codespell]
+ignore-words-list = "rouge"
+skip = "./locust_env/*,uv.lock,.venv,**/*.ipynb"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv]
-# Use system Python to avoid downloading
-python-preference = "system"
-# Use uv's pip implementation
-pip = true
+[project.scripts]
+agent-starter-pack = "src.cli.main:cli"
 
-[tool.ruff]
-line-length = 100
-target-version = "py311"
+[tool.hatch.build.targets.wheel]
+packages = ["src", "agents", "llm.txt"]
 
-[tool.black]
-line-length = 100
-target-version = ["py311"]
+[tool.uv.workspace]
+members = ["temp"]

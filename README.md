@@ -19,7 +19,7 @@ uv venv --python 3.11
 source .venv/bin/activate  # Linux/Mac
 # または .venv\Scripts\activate (Windows)
 
-# 依存関係をインストール
+# 依存関係をインストール (uvが自動的にpipをセットアップします)
 uv pip sync pyproject.toml
 ```
 
