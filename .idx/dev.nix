@@ -8,6 +8,7 @@
   packages = [
     # Python environment
     pkgs.python311
+    pkgs.python311Packages.pip
     
     # Development tools (uv includes pip functionality)
     pkgs.uv
