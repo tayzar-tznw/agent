@@ -39,6 +39,8 @@ Select Another Kernel > Python Environments > Create Python Environment > Venv >
 
 #### アプリケーションデフォルト認証（ADC）
 
+注意:以下のコマンドをそれぞれ実行して、新しいログインタブから出てくるトークンを入れる必要あります。
+
 ```bash
 # Google Cloud にログイン
 gcloud auth login
