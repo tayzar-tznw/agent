@@ -20,7 +20,7 @@ source .venv/bin/activate  # Linux/Mac
 # または .venv\Scripts\activate (Windows)
 
 # 依存関係をインストール
-uv pip sync pyproject.toml
+uv sync
 uv add ipykernal
 ```
 
