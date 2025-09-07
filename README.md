@@ -30,7 +30,10 @@ uv add ipykernal
 
 ### 3. Jupyter Notebookの環境設定
 
-weather_agent.ipnyb
+weather_agent.ipnyb を開いて右上の (Python 3.xx.xx)　をクリックし、 .venv (仮想環境を選んでください)
+Firebase studioの例ですが
+
+Select Another Kernel > Python Environments > Create Python Environment > Venv > Use Existing
 
 ### 4. Google Cloud 認証の設定
 
