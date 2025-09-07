@@ -21,13 +21,18 @@ source .venv/bin/activate  # Linux/Mac
 
 # 依存関係をインストール
 uv pip sync pyproject.toml
+uv add ipykernal
 ```
 
 ### 2. 環境変数の設定
 
 `.env` ファイルを更新してください
 
-### 3. Google Cloud 認証の設定
+### 3. Jupyter Notebookの環境設定
+
+weather_agent.ipnyb
+
+### 4. Google Cloud 認証の設定
 
 #### アプリケーションデフォルト認証（ADC）
 
@@ -37,9 +42,6 @@ gcloud auth login
 
 # アプリケーションデフォルト認証を設定
 gcloud auth application-default login
-
-# プロジェクトを設定
-gcloud config set project YOUR_PROJECT_ID
 ```
 
 ## プロジェクト構成
